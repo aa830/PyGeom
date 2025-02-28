@@ -7,7 +7,7 @@ Usage is very easy. For now there are 4 calculations you can make. You can enter
 
 1. Clone this repo
 2. In terminal, navigate to the PyGeom folder
-3. run `pip3 install .` this installs the requirements
+3. run `pip3 install -r requirements.txt` this installs the requirements
 4. Run the program (main.py) and enjoy!
 
 
