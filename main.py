@@ -3,25 +3,48 @@ import matplotlib.pyplot as plt
 import tkinter as tk
 from tkinter import messagebox, simpledialog
 
+def parse_point(input_str):
+    try:
+        x, y = map(float, input_str.split(','))
+        return x, y
+    except ValueError:
+        messagebox.showerror("Error", "Invalid input. Please enter coordinates as x,y")
+        return None, None
+
 def calculate_distance():
-    x1, y1, x2, y2 = get_two_points()
+    point1 = simpledialog.askstring("Input", "Enter Point A (x,y): ")
+    x1, y1 = parse_point(point1)
     if x1 is None:
+        return
+    point2 = simpledialog.askstring("Input", "Enter Point B (x,y): ")
+    x2, y2 = parse_point(point2)
+    if x2 is None:
         return
     distance = np.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
     messagebox.showinfo("Distance", f"Distance: {distance:.2f}")
     visualize(x1, y1, x2, y2, "Distance")
 
 def calculate_midpoint():
-    x1, y1, x2, y2 = get_two_points()
+    point1 = simpledialog.askstring("Input", "Enter Point A (x,y): ")
+    x1, y1 = parse_point(point1)
     if x1 is None:
+        return
+    point2 = simpledialog.askstring("Input", "Enter Point B (x,y): ")
+    x2, y2 = parse_point(point2)
+    if x2 is None:
         return
     mid_x, mid_y = (x1 + x2) / 2, (y1 + y2) / 2
     messagebox.showinfo("Midpoint", f"Midpoint: ({mid_x:.2f}, {mid_y:.2f})")
     visualize(x1, y1, x2, y2, "Midpoint", [(mid_x, mid_y)])
 
 def calculate_slope():
-    x1, y1, x2, y2 = get_two_points()
+    point1 = simpledialog.askstring("Input", "Enter Point A (x,y): ")
+    x1, y1 = parse_point(point1)
     if x1 is None:
+        return
+    point2 = simpledialog.askstring("Input", "Enter Point B (x,y): ")
+    x2, y2 = parse_point(point2)
+    if x2 is None:
         return
     if x1 == x2:
         messagebox.showinfo("Slope", "Slope is undefined (vertical line)")
@@ -30,35 +53,21 @@ def calculate_slope():
         messagebox.showinfo("Slope", f"Slope: {slope:.2f}")
 
 def calculate_triangle_area():
-    x1, y1, x2, y2, x3, y3 = get_three_points()
+    point1 = simpledialog.askstring("Input", "Enter Point A (x,y): ")
+    x1, y1 = parse_point(point1)
     if x1 is None:
+        return
+    point2 = simpledialog.askstring("Input", "Enter Point B (x,y): ")
+    x2, y2 = parse_point(point2)
+    if x2 is None:
+        return
+    point3 = simpledialog.askstring("Input", "Enter Point C (x,y): ")
+    x3, y3 = parse_point(point3)
+    if x3 is None:
         return
     area = abs(0.5 * (x1*(y2-y3) + x2*(y3-y1) + x3*(y1-y2)))
     messagebox.showinfo("Triangle Area", f"Area: {area:.2f}")
     visualize(x1, y1, x2, y2, "Triangle", [(x3, y3)], triangle=True)
-
-def get_two_points():
-    try:
-        x1 = float(simpledialog.askstring("Input", "Enter x1: "))
-        y1 = float(simpledialog.askstring("Input", "Enter y1: "))
-        x2 = float(simpledialog.askstring("Input", "Enter x2: "))
-        y2 = float(simpledialog.askstring("Input", "Enter y2: "))
-        return x1, y1, x2, y2
-    except (TypeError, ValueError):
-        messagebox.showerror("Error", "Invalid input. Please enter numeric values.")
-        return None, None, None, None
-
-def get_three_points():
-    try:
-        x1, y1, x2, y2 = get_two_points()
-        if x1 is None:
-            return None, None, None, None, None, None
-        x3 = float(simpledialog.askstring("Input", "Enter x3: "))
-        y3 = float(simpledialog.askstring("Input", "Enter y3: "))
-        return x1, y1, x2, y2, x3, y3
-    except (TypeError, ValueError):
-        messagebox.showerror("Error", "Invalid input. Please enter numeric values.")
-        return None, None, None, None, None, None
 
 def visualize(x1, y1, x2, y2, title, extra_points=[], triangle=False):
     plt.figure()
