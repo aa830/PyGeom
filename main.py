@@ -7,17 +7,25 @@ def parse_point(input_str):
     try:
         x, y = map(float, input_str.split(','))
         return x, y
-    except ValueError:
-        messagebox.showerror("Error", "Invalid input. Please enter coordinates as x,y")
+    except Exception:
         return None, None
 
+def get_valid_point(label):
+    while True:
+        point_str = simpledialog.askstring("Input", f"Enter Point {label} (x,y):")
+        if point_str is None:  # User pressed Cancel
+            return None, None
+        x, y = parse_point(point_str)
+        if x is not None:
+            return x, y
+        else:
+            messagebox.showerror("Error", "Invalid input. Please enter coordinates as x,y")
+
 def calculate_distance():
-    point1 = simpledialog.askstring("Input", "Enter Point A (x,y): ")
-    x1, y1 = parse_point(point1)
+    x1, y1 = get_valid_point("A")
     if x1 is None:
         return
-    point2 = simpledialog.askstring("Input", "Enter Point B (x,y): ")
-    x2, y2 = parse_point(point2)
+    x2, y2 = get_valid_point("B")
     if x2 is None:
         return
     distance = np.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
@@ -25,12 +33,10 @@ def calculate_distance():
     visualize(x1, y1, x2, y2, "Distance")
 
 def calculate_midpoint():
-    point1 = simpledialog.askstring("Input", "Enter Point A (x,y): ")
-    x1, y1 = parse_point(point1)
+    x1, y1 = get_valid_point("A")
     if x1 is None:
         return
-    point2 = simpledialog.askstring("Input", "Enter Point B (x,y): ")
-    x2, y2 = parse_point(point2)
+    x2, y2 = get_valid_point("B")
     if x2 is None:
         return
     mid_x, mid_y = (x1 + x2) / 2, (y1 + y2) / 2
@@ -38,12 +44,10 @@ def calculate_midpoint():
     visualize(x1, y1, x2, y2, "Midpoint", [(mid_x, mid_y)])
 
 def calculate_slope():
-    point1 = simpledialog.askstring("Input", "Enter Point A (x,y): ")
-    x1, y1 = parse_point(point1)
+    x1, y1 = get_valid_point("A")
     if x1 is None:
         return
-    point2 = simpledialog.askstring("Input", "Enter Point B (x,y): ")
-    x2, y2 = parse_point(point2)
+    x2, y2 = get_valid_point("B")
     if x2 is None:
         return
     if x1 == x2:
@@ -53,16 +57,13 @@ def calculate_slope():
         messagebox.showinfo("Slope", f"Slope: {slope:.2f}")
 
 def calculate_triangle_area():
-    point1 = simpledialog.askstring("Input", "Enter Point A (x,y): ")
-    x1, y1 = parse_point(point1)
+    x1, y1 = get_valid_point("A")
     if x1 is None:
         return
-    point2 = simpledialog.askstring("Input", "Enter Point B (x,y): ")
-    x2, y2 = parse_point(point2)
+    x2, y2 = get_valid_point("B")
     if x2 is None:
         return
-    point3 = simpledialog.askstring("Input", "Enter Point C (x,y): ")
-    x3, y3 = parse_point(point3)
+    x3, y3 = get_valid_point("C")
     if x3 is None:
         return
     area = abs(0.5 * (x1*(y2-y3) + x2*(y3-y1) + x3*(y1-y2)))
@@ -79,7 +80,7 @@ def visualize(x1, y1, x2, y2, title, extra_points=[], triangle=False):
     for (x, y) in extra_points:
         plt.scatter(x, y, color='blue', label='Extra Point')
     
-    if triangle:
+    if triangle and extra_points:
         x3, y3 = extra_points[0]
         plt.scatter(x3, y3, color='green', label='Third Point')
         plt.plot([x1, x2, x3, x1], [y1, y2, y3, y1], 'g-', label='Triangle')
