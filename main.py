@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import tkinter as tk
 from tkinter import messagebox, simpledialog
 
+#accepts points as pairs seperated by a ","
+
 def parse_point(input_str):
     try:
         x, y = map(float, input_str.split(','))
@@ -10,6 +12,7 @@ def parse_point(input_str):
     except Exception:
         return None, None
 
+#checks if points are numbers and entered with a "," otherwise throws error
 def get_valid_point(label):
     while True:
         point_str = simpledialog.askstring("Input", f"Enter Point {label} (x,y):")
@@ -21,6 +24,8 @@ def get_valid_point(label):
         else:
             messagebox.showerror("Error", "Invalid input. Please enter coordinates as x,y")
 
+
+#using math formula to calculate distance between two points which are called by executing get_valid_point() and then print ans.
 def calculate_distance():
     x1, y1 = get_valid_point("A")
     if x1 is None:
@@ -32,6 +37,7 @@ def calculate_distance():
     messagebox.showinfo("Distance", f"Distance: {distance:.2f}")
     visualize(x1, y1, x2, y2, "Distance")
 
+#calcs midpoint by calc avg of points A,B
 def calculate_midpoint():
     x1, y1 = get_valid_point("A")
     if x1 is None:
@@ -43,6 +49,7 @@ def calculate_midpoint():
     messagebox.showinfo("Midpoint", f"Midpoint: ({mid_x:.2f}, {mid_y:.2f})")
     visualize(x1, y1, x2, y2, "Midpoint", [(mid_x, mid_y)])
 
+#calcs gradient by using y2-y1/x2-x1 formula, cehcks if denom is 0 and if it is throws a warning "Slope is undefined"
 def calculate_slope():
     x1, y1 = get_valid_point("A")
     if x1 is None:
@@ -56,6 +63,7 @@ def calculate_slope():
         slope = (y2 - y1) / (x2 - x1)
         messagebox.showinfo("Slope", f"Slope: {slope:.2f}")
 
+#calc triangle area using shoestring method.
 def calculate_triangle_area():
     x1, y1 = get_valid_point("A")
     if x1 is None:
@@ -70,6 +78,7 @@ def calculate_triangle_area():
     messagebox.showinfo("Triangle Area", f"Area: {area:.2f}")
     visualize(x1, y1, x2, y2, "Triangle", [(x3, y3)], triangle=True)
 
+#using matplotlib to visualise the points and lines after calculation
 def visualize(x1, y1, x2, y2, title, extra_points=[], triangle=False):
     plt.figure()
     plt.axhline(0, color='black', lw=1)
@@ -90,6 +99,7 @@ def visualize(x1, y1, x2, y2, title, extra_points=[], triangle=False):
     plt.grid(True)
     plt.show()
 
+#main loop
 def main():
     root = tk.Tk()
     root.withdraw()
